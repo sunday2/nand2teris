@@ -642,6 +642,8 @@ Mux+FDD实现。
 16-bit的register，显然，可以通过1-bit register实现。存储16-bit的信息。
 
 其输入包括16-bit的in，load bit， 输出包括16-bit的out。
+
+CPU芯片内部一般都有几个Register,包括data register，address register。
 ```
 
 * RAM8
@@ -696,7 +698,7 @@ inc: 对PC进行自增1的写入。
 ### 04 Machine Language
 
 ```
-machine language: 关注的是对硬件的direct control(牺牲了可读性，易用性)，是硬件和软件的接口。
+machine language: 关注的是对硬件的direct control(牺牲了可读性，易用性)，是硬件和软件的接口。(It is the interface between hardware and software.It is exactly the way that software can control the hardware)
 
 high-level language: 关注的是generality and power of expression. 
 
