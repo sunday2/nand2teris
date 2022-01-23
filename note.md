@@ -701,6 +701,10 @@ machine language: 关注的是对硬件的direct control(牺牲了可读性，�
 high-level language: 关注的是generality and power of expression. 
 
 所以，machine language是直接给硬件平台的(其只认二进制码)， high-level language除了控制计算机，更重要的目的是同时提高可读性，更加human readable，是给人看的。
+
+不同的硬件(CPU)都有其固定的指令集，软件级别上的操作，最终都会被翻译为这套指令集中的指令。低级语言更多在一些对程序性能要求很高，需要自定义优化机制的程序上使用。否则高级语言自带的性能优化机制能够满足需求。
+
+assembly language: 汇编语言，低级语言，可读性比二进制机器码强，给人类看的。通过assembler最终翻译回机器指令二进制码。 
 ```
 
 
@@ -714,7 +718,7 @@ manipulate a memory using a processor and a set of registers.
 机器语言可以认为是一种约定的形式，设计用来通过处理器和一组寄存器来操纵(读和写)内存的目的.
 
 machine language既然是操纵硬件设备，那么主要是哪些设备呢？
-主要是三大类：processor, memory(包括了data memory，instruction memory), register(一组，reside在cpu内部)。
+主要是三大类：processor, memory(包括了data memory，instruction memory，主要指RAM), register(一组，reside在cpu内部)。
 ```
 
 
