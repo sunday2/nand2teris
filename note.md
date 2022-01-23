@@ -592,6 +592,9 @@ load: 设置couter的值.
 reset: 重置counter的值为0.
 increment: counter的值在原值基础上加一。
 
+三个控制位都是对counter进行写操作。
+
+当三个控制位同时为0的时候，则是对counter的读操作。
 ```
 
 
