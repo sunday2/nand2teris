@@ -44,6 +44,19 @@
 (4)practice.
 
 因为Nand门是作为primative gate, 也就是与非门可以构建任意门，这点很重要！我们无需知道与非门是如何实现的，只需用它来构建任意门。下面是一些推导(deduce)过程(prefix notation)。
+
+buse: Computer hardware is typically designed to operate on multi-bit arrays called
+“buses.”
+
+For example, a basic requirement of a 32-bit computer is to be able to
+compute (bit-wise) an And function on two given 32-bit buses.
+
+To implement this operation, we can build an array of 32 binary And gates, each operating
+separately on a pair of bits. In order to enclose all this logic in one package, we
+can encapsulate the gates array in a single chip interface consisting of two 32-bit
+input buses and one 32-bit output bus
+
+总线的概念参考:1.2.3节。
 ```
 
 * Nand
@@ -254,6 +267,116 @@ see HDL Survival Guide on officail website.
 其中，加法算术中的overflow，计算机实际实现中一般不会发告警，所以，要注意overflow的情况，此时获取的运算结果是不正确的。
 
 如何表示二进制数是首先要解决的问题。
+正数原码表示，负数补码表示(2's complement representation). 思考为什么？
+-x=2^n-x
+
+4-bit的word，2^4=16 possibilities
+0000 0
+0001 0
+0010 2
+0011 3
+0100 4
+0101 5
+0110 6
+0111 7
+1000 -8 (8)
+1001 -7 (9)
+1010 -6 (10)
+1011 -5 (11)
+1100 -4 (12)
+1101 -3 (13)
+1110 -2 (14)
+1111 -1 (15)
+
+ -2          
++
+ -3
+--------
+ -5
+
+
+ 14
++
+ 13
+--------
+ 11
+ 
+
+
+
+ 1110
++
+ 1101
+------
+11011（溢出舍弃）
+
+11011(ten)=27
+1011(ten)=11
+
+1011使用补码表示法进行解读的时候，其表示-5.
+可以发现，二进制补码表示法表示负数的情况下，负数的加法和正数的加法是一样的。硬件级别上加法适用于正数的加法和二进制补码表示的负数加法。
+
+再来看一个正数和一个负数的加法：
+ 2
++
+-3
+------
+-1
+
+
+ 2
++
+ 13
+--------
+ 15
+
+ 0010
++
+ 1101
+-------
+ 1111
+ 
+ 1111(ten)=15
+ 
+ 以二进制补码表示法解读，则等于-1.可以发现一个正数和一个负数(in 2's complement representation)的加法用之前硬件级别上实现的加法器同样适用。
+
+
+
+减法的实现基础：computing -x
+前面已经证实，当使用二进制补码表示法表示负数的时候，正数和负数的加法可以使用同一个加法器。
+那么减法又该如何实现呢? 可以发现，a-b=a+(-b).
+减法运算就转换为加法运算了，可以已经实现的加法器。所以减法问题转换为如何computing -x。
+
+input: x 
+output: -x
+
+idea: 2^n-x = 1+(2^n-1)-x
+
+
+input: 4
+output:-4
+
+2^4-4=12
+
+ 1111
+-
+ 0100
+-----
+ 1011
++
+ 0001
+------
+ 1100
+
+1100使用原码表示法解读为12，使用补码表示法解读为-4.
+
+可以发现上面求负数分为两步，
+第一步是(2^n-1)-x, 这个其实可以转换为逻辑运算，异或运算。
+第二步是1+?, 因为加法器已经实现了，所以用回实现的加法器就行。
+
+综上，逻辑运算->加法运算->减法运算。(负数需要使用二进制补码表示)
+
+为什么CPU核心部件叫ALU也就能够理解了，算术逻辑单元， 算术运算是基于逻辑运算实现的，逻辑运算又是基于门电路实现的，所以Nand组装计算机成为了可能。
 ```
 
 
@@ -263,7 +386,7 @@ see HDL Survival Guide on officail website.
 ```
 二元加法，并且是1-bit的二元加法，输出也是二元，分别是sum的LSB和MSB(carry bit)。
 
-二元1-bit的加法，可以发现sum的LSB可以通过a和b进行Xor运算得到; MSB可以通过And运算得到。
+二元1-bit的加法，可以发现sum的LSB(lowest significant bit)可以通过a和b进行Xor运算得到; MSB(most significant bit)可以通过And运算得到。
 
 所以，可以发现，二元1-bit加法转化为了布尔运算，也就是计算中的算术运算本质也是逻辑运算。
 ```
@@ -321,24 +444,33 @@ zr,ng分别有以下可能:
 ```
 搞懂sequential logic和combinational logic的区别.
 
-前面研究的各种门可以认为输入和输出是即时发生的, 也就是给了门对应的输入, 立刻有了其对应的输出.
+前面研究的各种门可以认为输入和输出是即时发生的, 也就是给了门对应的输入, 立刻有了其对应的输出.(或者说input和output是在同一个时间单元发生)。
 而计算机不仅要能计算, 还需要能够mantain state, 维护状态, 也就是计算机需要一些记忆单元, 能够存储数据.
 
 计算机中的这些存储设备都是通过时序芯片实现的.
 
-memory element/device, 从名字上可以看出指的是有记忆功能的单元/设备, 包括register, memeory, counter.
+memory element/device: 从名字上可以看出指的是有记忆功能的单元/设备, 包括register, memeory(RAM), counter.
 
 memory在英文里更常用的是记住,记忆的意思, 在计算机领域, 其指的是存储.
 
 说到记忆, 那么就和时间有关系, 计算机是对现实世界的模拟, 那么首先就得解决如何模拟现实中的时间概念.
 
 所有时序芯片都有一个clock input, 用来接收时钟信号!!!
+
+Memory:
+(1)main memory: RAM, ...
+(2)secondary memory: disks, ...
+(3)volatile/non-volatile
+
+FF->DFF->sigle-bit register(load bit as input)->16-bit register->RAM(address as input)
+
+how read and write to the register: by set the load bit.
 ```
 
 * The clock(时钟)
 
 ```
-计算中使用的是the clock(时钟)来表示时间的流逝, 其会发出连续的交流信号(类似0-1, low-high voltage, tick-tock,一般通过oscillator实现). 
+时间的衡量: 计算中使用的是the clock(时钟)来表示时间的流逝, 其会发出连续的交流信号(类似0-1, low-high voltage, tick-tock,一般通过oscillator实现). 
 
 time unit: 这类信号固定是两种信号连续交替出现, 定义从tick开始到tock结束的这段时间为一个时间周期, 也叫作time unit.
 所以, 现实中连续的时间在计算机中就被抽象一个个离散的时间单元. 这类时钟信号会通过硬件中的电子回路, 同步传递到所有的时序芯片. 那么, 有了时钟的概念, 在描述门的input和output的时候, 相当于就有了时间限定. 比如, 对于同一个芯片门Not, time unit 1的时候input为a, time unit 2的input为b; 同理output亦是如此.
@@ -393,6 +525,8 @@ state[t]=f(input, state[t-1]).
 ```
 if load(t-1) then out(t)=in(t-1); else out(t)=out(t-1).
 
+remember state for ever.
+
 1-bit register其实就是1-bit memory了, 理解其实如何记住1-bit的数据, 这个很重要, 是后面更复杂memory的基础.
 
 其和FDD的区别在于, FDD每个时钟周期都会output前一个时钟周期的input; 1-bit register则多了一个load bit输入, 其根据load bit判断是否用input的数据, 还是原FDD output的数据.
@@ -426,7 +560,7 @@ load bit其实就相当于控制是对其进行读操作, 还是写操作(看着
 
 ```
 random access memory. RAM is a sequential chip with a clocked behavior.
-一般存储： date， instruction.
+一般存储： data, instruction.
 
 可以抽象为:
 a sequence of n addressable registers, with addresses 0 to n-1.
@@ -440,15 +574,24 @@ w(word width): no impact on the RAM logic.
 RAM的读和写：
 因为RAM的内部是由多个register组成，本质上是register的读和写。 
 
-RAM多了一个寻址入参，其位数和register的数目有关，相当于为每个register编了号，其得能够表示所有register，这就是存储设备上经常说到的寻址，所有存储设备都是时序芯片。
+   RAM多了一个寻址入参，其位数和register的数目有关，相当于为每个register编了号，其得能够表示所有register，这就是存储设备上经常说到的寻址，所有存储设备都是时序芯片。
+   RAM内部是如何寻址的？也就是如何选中哪个Register？通过Multiplexor和DMultiplexor芯片。
+
 ```
 
 * Counter
 
 ```
-Programme Counter: 程序计数器，告诉计算机下一条要执行的指令的地址值。
+Programme Counter: 程序计数器，一个芯片，一个硬件设备，告诉计算机下一条要执行的指令的地址值。
 
 primitive operations: load, reset, increment.
+
+所以程序计数器有三个控制位，分别是load，reset，increment.(某一时刻只有其中一个能生效)
+
+load: 设置couter的值.
+reset: 重置counter的值为0.
+increment: counter的值在原值基础上加一。
+
 ```
 
 
