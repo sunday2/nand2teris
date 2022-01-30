@@ -800,8 +800,15 @@ M=D    //M[2]=D
 引用了Donald Knuth(美国计算机科学家,现代计算机科学先驱人物，图灵奖得主)的一个观点:
 Instead of imagining that our main task as programmer is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.
 
+symbolic references.(assembly language中的语法糖，提高了可读性)
 
-label declaration。
+(1)declare label
+(2)use label
+
+@label translate to @n by the assembler, where n is the instruction number following the label declaration.
+
+
+
 symbol program的好处之一，地址的具体值交给assember和loader处理，而不需要hardcode。
 计算机最终是一条一条instruction执行(执行program counter存储的地址值指向的指令)，每条instruction在ROM中都有其对应的地址值。
 

@@ -1,10 +1,7 @@
-/**
- * practice the hack programming: branching. Implement the following logic
- * if R0>0
- *    R1=1
- * else
- *    R0=0
- */
+//practice the hack programming: branching. Implement the following logic
+
+//if R0>0  R1=1
+//else R1=0
 
 @R0
 D=M  //D=RAM[0]
