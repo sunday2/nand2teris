@@ -817,7 +817,15 @@ symbol program的好处之一，地址的具体值交给assember和loader处理�
 hardcode意味着写assembly或者machine language的人得提前假设指令的地址(事实上无法知道加载这段指令序列到ROM时的起始地址/base address是什么，所以hard code的写法相当于起始地址为0，也就是ROM的起始位置)。
 
 3.Variables:
-指在data memory临时找的一个availabe的register，可以看作是一个拥有name和value的container。这个负责找available的空间是loader负责的事情，不是写language的人需要考虑的(毕竟也不知道哪块空间是available的)。
+variable is an obstruction of a container that has a name and a value.
+
+In higher language, there are different types of variables and different types of values.
+
+In Hack machine language, there is only one type of variable and only need to worry about the 16-bit value. So we use a single register in RAM to implements the variable.
+
+@temp: find some available memory register(say register n) and use it to represent the variable temp.(no need to declaration).
+
+指在data memory临时找的一个availabe的register，可以看作是一个拥有name和value的container。这个负责找available的空间是loader负责的事情，不是写language的人需要考虑的(毕竟在写程序的时候也不知道哪块空间是available的，只有loader加载程序的那刻其知道)。
 
 4.Iteration
 
