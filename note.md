@@ -785,10 +785,27 @@ M=D    //M[2]=D
 所以，在高级语言中，看似是原子操作的操作并非原子的，它需要多条机器指令一起执行才能完成目标。
 
 2.Branching
-label declaration。symbol program的好处之一，地址的具体值交给assember和loader处理，而不需要hardcode。
+
+机器语言中，本身并没有直接的分支逻辑(if)，但是有地址跳转逻辑。
+
+对于计算机而言，分支本质上就是指令的跳转，也就是指令地址值的跳转！！！
+
+这个意识很重要，因为各种高级语言中都会有分支逻辑，虽然它们语法上各不相同，但是得意识到最终它们在机器语言层面上都是通过地址跳转实现的。
+
+高级语言->低级语言->机器语言。
+
+学习课程中的demo，仔细体会。
+
+当然，为了提高可读性，assembly language提供了一些语法糖，使汇编语言的分支语法可读性更高。
+引用了Donald Knuth(美国计算机科学家,现代计算机科学先驱人物，图灵奖得主)的一个观点:
+Instead of imagining that our main task as programmer is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.
+
+
+label declaration。
+symbol program的好处之一，地址的具体值交给assember和loader处理，而不需要hardcode。
 计算机最终是一条一条instruction执行(执行program counter存储的地址值指向的指令)，每条instruction在ROM中都有其对应的地址值。
 
-对于计算机而言，分支本质上就是指令的跳转，也就是指令地址值的跳转。
+
 
 hardcode意味着写assembly或者machine language的人得提前假设指令的地址(事实上无法知道加载这段指令序列到ROM时的起始地址/base address是什么，所以hard code的写法相当于起始地址为0，也就是ROM的起始位置)。
 
@@ -812,7 +829,7 @@ we can end the programme with an infinite loop.
 
 2.assembly code为什么要增加built-in symbols?
 
-硬件对应的二进制指令集是固定的，但是汇编语言是给开发人员使用的，所以可以在可读性上，使用方便性上进行增强，比如将内置一些高频使用的常量，这样人类在阅读和写汇编语言的时候可读性更强，使用更加方便。毕竟这些通过assember最终都会翻译为我们无法改变的二进制指令集。从二进制指令集的角度来讲，汇编语言这些内置符号对于其是透明的，也就是语法糖。对于跟高级的语言同理，例如java每次新版本中也许增加了一些新的语法特性，从字节码角度来讲，这些语法特性对于其也许是透明的，经过javac处理后，这些新的语法特性并没有改变字节码本身。
+硬件对应的二进制指令集是固定的，但是汇编语言是给开发人员使用的，所以可以在可读性上，使用方便性上进行增强，比如将内置一些高频使用的常量，这样人类在阅读和写汇编语言的时候可读性更强，使用更加方便。毕竟这些通过assember最终都会翻译为我们无法改变的二进制指令集。从二进制指令集的角度来讲，汇编语言这些内置符号对于其是透明的，也就是语法糖。对于跟高级的语言同理，例如java每次新版本中也许增加了一些新的语法特性，从字节码角度来讲，这些语法特性对于其也许是透明的，经过javac处理后，这些新的语法特性并没有改变字节码本身。(分层，降维打击).
 
 
 小思考:
