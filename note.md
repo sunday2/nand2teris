@@ -825,6 +825,8 @@ In Hack machine language, there is only one type of variable and only need to wo
 
 @temp: find some available memory register(say register n) and use it to represent the variable temp.(no need to declaration).
 
+@temp->@n
+
 指在data memory临时找的一个availabe的register，可以看作是一个拥有name和value的container。这个负责找available的空间是loader负责的事情，不是写language的人需要考虑的(毕竟在写程序的时候也不知道哪块空间是available的，只有loader加载程序的那刻其知道)。
 
 4.Iteration
