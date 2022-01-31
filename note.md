@@ -809,8 +809,10 @@ symbolic references.(assembly language中的语法糖，提高了可读性)
 
 
 
-symbol program的好处之一，地址的具体值交给assember和loader处理，而不需要hardcode。
+symbol program(符号化编程)的好处之一，地址的具体值交给assember和loader处理，而不需要hardcode。
 计算机最终是一条一条instruction执行(执行program counter存储的地址值指向的指令)，每条instruction在ROM中都有其对应的地址值。
+
+符号化编程的应用: label和variable。
 
 
 
@@ -830,6 +832,15 @@ In Hack machine language, there is only one type of variable and only need to wo
 指在data memory临时找的一个availabe的register，可以看作是一个拥有name和value的container。这个负责找available的空间是loader负责的事情，不是写language的人需要考虑的(毕竟在写程序的时候也不知道哪块空间是available的，只有loader加载程序的那刻其知道)。
 
 4.Iteration
+
+迭代(循环)也是高级语言中的基本语法，不同高级语言语法上有细微差异。理解机器语言上迭代如何实现，有助于快速上手高级语言中的循环语法。机器语言中的迭代(循环)和branching一样，也是通过指令地址跳转实现的。
+
+课程中也说到程序设计时(技术面试题也是如此)的一套最佳实践理论:
+(1)提问，确定需求
+(2)设计算法
+(3)pseudo code(伪代码)
+(4)implement
+(5)test(trace table,etc.)
 
 5.Pointers
 variables that store memory addresses like arr and i are called pointers.
