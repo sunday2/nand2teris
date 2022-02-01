@@ -884,7 +884,7 @@ pointers: variables that store memory addresses like arr and i are called pointe
 typical pointer semantics:
 set the address register to the contents of some the memory register.
 
-其实对于计算机来说，存储都是二进制码，都是数据，但是其表示的含义是人为赋予的。对于指针，就是特指存储了表示地址值含义数据的空间，指针是从人的角度定义，可以理解为存储了特殊值(主存地址值)的变量。
+从计算机角度，存储的都是二进制码，但是其表示的含义是人为赋予的。对于指针，就是特指存储了表示地址值含义数据的空间，指针是从人的角度定义，可以理解为存储了特殊值(主存地址值)的变量。
 
 何为地址？内存被以固定的大小为单位，划分为一块块区域并从0开始编号，这些编号就是地址。
 
@@ -897,6 +897,28 @@ arr: 存储了数组起始地址值的变量
 n: 存储了数组长度的变量
 
 所以你可以发现，在java中，声明数组必须给出数组长度。(ArrayList是通过数组实现的，所以默认隐式的给了长度)。
+```
+
+```java
+//suppose that arr=100 and n=10
+//pseudo code
+for(i=0; i<n; i++){
+    arr[i]=-1
+}
+```
+
+```java
+//pseudo code
+arr=RAM[0]
+n=RAM[1]
+i=0
+    
+LOOP:
+	if i==n goto END
+	arr[i]=-1
+    i=i+1
+END:
+	infinite loop
 ```
 
 
