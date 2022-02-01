@@ -766,11 +766,9 @@ machine language中的一条instruction最终都是被translate成一串二进�
 
 ##### specification
 
+* 1.Working with registers and memory
 
-
-```
-1.Working with registers and memory
-
+```java
 //RAM[2]=RAM[0]+RAM[1]
 @0
 D=M  //D=M[0]
@@ -780,12 +778,16 @@ D=D+M  //D=D+M[1]
 
 @2
 M=D    //M[2]=D
+```
 
+```
 可以发现，加法运算，先从主存读取数据到寄存器中，然后再把计算结果从寄存器写入到主存。
 所以，在高级语言中，看似是原子操作的操作并非原子的，它需要多条机器指令一起执行才能完成目标。
+```
 
-2.Branching
+* 2.Branching
 
+```
 机器语言中，本身并没有直接的分支逻辑(if)，但是有地址跳转逻辑。
 
 对于计算机而言，分支本质上就是指令的跳转，也就是指令地址值的跳转！！！
@@ -817,8 +819,13 @@ symbol program(符号化编程)的好处之一，地址的具体值交给assembe
 
 
 hardcode意味着写assembly或者machine language的人得提前假设指令的地址(事实上无法知道加载这段指令序列到ROM时的起始地址/base address是什么，所以hard code的写法相当于起始地址为0，也就是ROM的起始位置)。
+```
 
-3.Variables:
+
+
+* 3.Variables
+
+```
 variable is an obstruction of a container that has a name and a value.
 
 In higher language, there are different types of variables and different types of values.
@@ -830,9 +837,13 @@ In Hack machine language, there is only one type of variable and only need to wo
 @temp->@n
 
 指在data memory临时找的一个availabe的register，可以看作是一个拥有name和value的container。这个负责找available的空间是loader负责的事情，不是写language的人需要考虑的(毕竟在写程序的时候也不知道哪块空间是available的，只有loader加载程序的那刻其知道)。
+```
 
-4.Iteration
 
+
+* 4.Iteration
+
+```
 迭代(循环)也是高级语言中的基本语法，不同高级语言语法上有细微差异。理解机器语言上迭代如何实现，有助于快速上手高级语言中的循环语法。机器语言中的迭代(循环)和branching一样，也是通过指令地址跳转实现的。
 
 课程中也说到程序设计时(技术面试题也是如此)的一套最佳实践理论:
@@ -841,16 +852,65 @@ In Hack machine language, there is only one type of variable and only need to wo
 (3)pseudo code(伪代码)
 (4)implement
 (5)test(trace table,etc.)
+```
 
-5.Pointers
-variables that store memory addresses like arr and i are called pointers.
-其实对于计算机来说，存储都是二进制码，都是数据，但是其表示的含义是人为赋予的。对于指针，就是特指存储了表示地址值含义数据的空间，指针是从人的角度。
+```
+//computes:RAM[1]=1+2+3...+n
+//usage: put a number(n) in RAM[0]
 
-6.Input/Output
+//pseudo code
+sum=0
+i=1
+n=RAM[0]
+
+LOOP:
+	if i>n goto STOP
+	sum=sum+i
+	i=i+1
+	goto LOOP
+STOP:
+	RAM][1]=sum
+END:
+    infinite loop
+```
+
+
+
+* 5.Pointers
+
+```
+pointers: variables that store memory addresses like arr and i are called pointers.
+
+typical pointer semantics:
+set the address register to the contents of some the memory register.
+
+其实对于计算机来说，存储都是二进制码，都是数据，但是其表示的含义是人为赋予的。对于指针，就是特指存储了表示地址值含义数据的空间，指针是从人的角度定义，可以理解为存储了特殊值(主存地址值)的变量。
+
+何为地址？内存被以固定的大小为单位，划分为一块块区域并从0开始编号，这些编号就是地址。
+
+如何使用指针？得先将指针的值加载到CPU的地址寄存器中，然后再寻址，获取指向的内存区域的值。
+
+比如数组，我们知道数组是内存(主存)中的一块连续的空间，那么如何表示数组arr呢?
+
+因为地址连续，所以只需要知道起始地址，以及数组长度即可，所以需要以下变量:
+arr: 存储了数组起始地址值的变量
+n: 存储了数组长度的变量
+
+所以你可以发现，在java中，声明数组必须给出数组长度。(ArrayList是通过数组实现的，所以默认隐式的给了长度)。
+```
+
+
+
+* 6.Input/Output
+
+```
 output: screen
 input: keyboard
+```
 
 
+
+```
 问题：
 1.how can we end the programme safely?
 we can end the programme with an infinite loop.
@@ -864,9 +924,6 @@ we can end the programme with an infinite loop.
   这个规范指的是在该教程中设计的计算机，名字叫做Hack，设计的其对应的指令集(机器语言)提供的功能。可以发现划分为了6个部分。其实，这也是所有现代化计算机基本会提供的功能。不同计算机(CPU)对应有一套其自己的指令集，基本功能差不多(实现上有区别,所以性能上有差异)，这些都是硬件层面上决定了的。
   因此，所有其它软件层面的高级语言最终都会被翻译为指令集中的对应的指令。区别在于如何翻译(也决定了不同语言在性能上的差异)，可以说是殊途同归。操作系统也是软件，也是某种编程语言实现的，其最终也是翻译为硬件级别上的具体的指令。(不同硬件厂商都遵循一定的标准，除了类似苹果这种封闭的生态，那么其硬件的一些接口和指令没有开放出来，那么在其硬件上就只能装其自己开发的操作系统)。机器语言最终都是一系列二进制指令，设计的时候一般都有设计其对应的符号表示(汇编语言,symbolic code,assembly code)，毕竟低级语言开发者不可能直接使用二进制码进行开发，他们同样得查询汇编语言的规范来使用汇编语言控制计算机，需要知道每条指令的语义(semantics),不能想当然。
   高级语言和低级语言的一个区别就是高级语言帮开发者隐藏了一些东西，使开发者更容易理解。比如，高级语言不会有直接对内存和寄存器操作的语法(虽然底层最终肯定是这样)。从高级语言到最终的机器语言二进制码之间隔了好几层。
-  
-  
-
 ```
 
 
