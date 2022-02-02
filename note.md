@@ -711,7 +711,7 @@ assembly language: 汇编语言，低级语言，可读性比二进制机器码�
 
 
 
-#### machines
+#### machines language
 
 ```
 A machine language can be viewed as an agreed-upon formalism, designed to
@@ -957,10 +957,6 @@ END:
 
 
 
-
-
-
-
 ```
 问题：
 1.how can we end the programme safely?
@@ -979,18 +975,6 @@ we can end the programme with an infinite loop.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 #### perspective
 
 ```
@@ -1006,6 +990,49 @@ ROM是read only memory，其不依赖外部电源，即使电脑关机数据还�
 4.为什么需要Cache。
 存储设备一般越快越小，则越贵。CPU计算速度很快，所以CPU需要用到的数据则放在相对快速的存储设备，较少用到的数据则放在相对较慢的存储设备。需要在各个因素之间取得一个平衡。
 ```
+
+
+
+#### project
+
+* objective
+
+```
+   get a taste of low-level programming in machine language, and get acquainted with the Hack computer platform.
+```
+
+##### Multiplication Programme
+
+```
+R2=R0*R1
+```
+
+```
+  在Hack computer中，硬件级别上只实现了addtition和substraction. 那么，软件级别(assembly language)如何实现乘法器？软件层的功能必然依赖于下一层的功能，所以使用assembly language实现乘法，必然依赖于硬件层已经实现的加法，可以考虑将乘法运算转换为加法运算。(程序要求中R0和R1存储的都是正数,难度降低)
+  a*b=a+a+...+a
+```
+
+* pseudo code
+
+```java
+a=RAM[0]
+b=RAM[1]
+sum=0
+i=0
+
+LOOP:
+	if i==b goto END
+	sum=sum+a
+	i=i+1
+    goto LOOP
+STOP:
+	RAM[2]=sum
+	goto END
+END:
+	goto END
+```
+
+
 
 
 
