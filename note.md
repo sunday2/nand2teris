@@ -930,6 +930,35 @@ output: screen
 input: keyboard
 ```
 
+```
+   用户无法直接操控IO设备，但是CPU是通过memory map来与IO设备交互的，所以可以通过操控IO设备对应的memory map，间接操控IO设备。
+   
+screen: 显示器是输出设备的基本且典型代表，通过实现操控其对应的memory map，在screen上画一个填充的长方形，相当于计算机图像化的一个hello world程序。(screen每一个pixel对应其memory map的一个bit)。模拟屏幕的一行假设有512 pixels。
+
+分析: 模拟屏幕一行512 pixels=32*16 pixels，相当于一行有16个words.(RAM中是由16-bit register组成)。
+```
+
+```java
+//pseudo code
+addr=SCREEN    //the base address of the screen in RAM.
+n=RAM[0]       //the length of the rectangle
+i=0            //row number
+    
+LOOP:
+	if i==n goto END
+	RAM[addr]=-1   //1111 1111 1111 1111
+	addr=addr+32
+    i=i+1
+    goto LOOP
+
+END:
+	goto END
+```
+
+
+
+
+
 
 
 ```
