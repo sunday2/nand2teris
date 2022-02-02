@@ -1008,7 +1008,7 @@ R2=R0*R1
 ```
 
 ```
-  在Hack computer中，硬件级别上只实现了addtition和substraction. 那么，软件级别(assembly language)如何实现乘法器？软件层的功能必然依赖于下一层的功能，所以使用assembly language实现乘法，必然依赖于硬件层已经实现的加法，可以考虑将乘法运算转换为加法运算。(程序要求中R0和R1存储的都是正数,难度降低)
+  在Hack computer中，硬件级别上只实现了addtition和substraction. 那么，软件级别(assembly language)如何实现乘法器？软件层的功能必然依赖于下一层的功能，所以使用assembly language实现乘法，必然依赖于硬件层已经实现的加法，可以考虑将乘法运算转换为加法运算。(程序要求中R0和R1存储的都是正数,不用考虑负数的场景，难度降低)
   a*b=a+a+...+a
 ```
 

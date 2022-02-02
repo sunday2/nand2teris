@@ -17,11 +17,13 @@ D=M
 @a 
 M=D  //a=RAM[0]
 
+
 @R1
 D=M
 
 @b 
 M=D   //b=RAM[1]
+
 
 @sum
 M=0    //sum=0
@@ -29,6 +31,18 @@ M=0    //sum=0
 
 @i   
 M=0    //i=0
+
+//check for zero, conditional jump
+@a
+D=M
+@STOP
+D;JEQ
+
+//check for zero, conditional jump
+@b
+D=M
+@STOP
+D;JEQ
 
 (LOOP)
     @i
