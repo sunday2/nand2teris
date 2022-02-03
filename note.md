@@ -935,7 +935,7 @@ input: keyboard
    
 screen: 显示器是输出设备的基本且典型代表，通过实现操控其对应的memory map，在screen上画一个填充的长方形，相当于计算机图像化的一个hello world程序。(screen每一个pixel对应其memory map的一个bit)。模拟屏幕的一行假设有512 pixels。
 
-分析: 模拟屏幕一行512 pixels=32*16 pixels，相当于一行有16个words.(RAM中是由16-bit register组成)。
+分析: 模拟屏幕一行512 pixels=32*16 pixels，相当于一行有32个words.(RAM中是由16-bit register组成)。
 ```
 
 ```java
@@ -1001,7 +1001,7 @@ ROM是read only memory，其不依赖外部电源，即使电脑关机数据还�
    get a taste of low-level programming in machine language, and get acquainted with the Hack computer platform.
 ```
 
-##### Multiplication Programme
+##### Multiplication Program
 
 ```
 R2=R0*R1
@@ -1033,6 +1033,54 @@ END:
 ```
 
 
+
+##### I/O-Handling Program
+
+```
+当键盘有有按键时，屏幕变黑;否则屏幕变白。
+
+The Hack computer includes a black-and-white screen organized as 256
+rows of 512 pixels per row
+模拟屏幕一行有32个words(16-bit), 2^8=256行。模拟屏幕占用的总的words=32*256=8192 words.
+
+思路:
+监听(loop实现)键盘对应memory map的值, 0表示无scan code，其余表示有scan code。0的时候screen渲染为白色，即screen对应memory map填充0；1的时候渲染为黑色，即memory map填充1。读取一次键盘，渲染一次，继续下一次读取，如此循环。(相当于每次循环是以一个word为单位来渲染)
+```
+
+* pseudo code
+
+```
+count=32*256=8192     //total words of screen memory map. 
+
+READ_KEYBOARD:
+kbd=KBD               //base address of the keyboard in RAM 
+i=0					  //reset i
+
+if kbd==0
+	goto PAINT_WHITE 
+else 
+	goto PAINT_BLACK
+	
+	
+PAINT_WHITE:
+	color=0
+	goto PAINT_LOOP
+	
+
+PAINT_BLACK:
+	color=-1               //-1: 1111 1111 1111 1111
+	goto PAINT_LOOP
+	
+PAINT_LOOP:
+	if i==count goto READ_KEYBOARD
+	
+	addr=SCREEN+i    //address of the pixel that ready to paint
+	
+	RAM[addr]=color //paint the pixel
+	
+	i=i+1	
+	goto PAINT_LOOP
+```
 
 
 
