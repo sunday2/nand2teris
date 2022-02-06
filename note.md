@@ -1044,7 +1044,7 @@ rows of 512 pixels per row
 模拟屏幕一行有32个words(16-bit), 2^8=256行。模拟屏幕占用的总的words=32*256=8192 words.
 
 思路:
-监听(loop实现)键盘对应memory map的值, 0表示无scan code，其余表示有scan code。0的时候screen渲染为白色，即screen对应memory map填充0；1的时候渲染为黑色，即memory map填充1。读取一次键盘，渲染一次，继续下一次读取，如此循环。(相当于每次循环是以一个word为单位来渲染)
+监听(loop实现)键盘对应memory map的值, 0表示无scan code，其余表示有scan code。0的时候screen渲染为白色，即screen对应memory map填充0；1的时候渲染为黑色，即memory map填充1。读取一次键盘，渲染一次，继续下一次读取，如此循环。(相当于每次循环是以一个word为单位来渲染,一次渲染16个pixels)
 ```
 
 * pseudo code
