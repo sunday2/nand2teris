@@ -1084,5 +1084,47 @@ PAINT_LOOP:
 
 
 
+### 05 Computer Architecture
+
+```
+    现代计算机的架构基本都是基于Von Neumann架构。它由三大部分组成，CPU, memory和IO。现在需要基于先前已经实现的芯片，从最开始的原始门芯片Nand，到ALU，Register，Memory...将它们像积木一样，组装起来，变成拥有基本功能的计算机。
+    可以将信息的传递当作信息的流动。计算机内部的信息可以划分为三大类: data, address, control, 所以有了对应的bus: data bus, address bus, control bus(bus: a set of wires).
+```
+
+#### CPU
+
+```
+   虽然从外部宏观看，CPU对外暴露的引脚(接口)不多，但是其内部由几个主要芯片实现，分别是ALU，A Register，D Register，PC组成。CPU的实现电路图需要反复琢磨。
+```
+
+* test code
+
+```
+//RAM[2]=RAM[0]+[1]
+@0
+D=M   //D=RAM[0]
+
+@1
+D=D+M   //D=RAM[0]+RAM[1]
+
+@2
+M=D    //M=RAM[0]+RAM[1]@32
+```
+
+```
+0000000000000000
+1111110000010000
+0000000000000001
+1111000010010000
+0000000000000010
+1110001100001000
+```
+
+```
+可以将在第四章中的low-level language写的demo(6个基本功能)来验证一下，加载到CPUEmulator转换成二进制码即可。
+```
+
+
+
 
 
