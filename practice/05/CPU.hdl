@@ -73,8 +73,12 @@ CHIP CPU {
     ALU(x=Dout,y=AMout,zx=zx,nx=nx,zy=zy,ny=ny,f=f,no=no,out=outM,out=ALUout,zr=zero,ng=neg);
 
     //Register D,when it is an C-instruction, load D. When currently is C-instruction and d2 is 1, the destination contains D register.So it becomes the control bit.
-     And(a=instruction[15],b=instruction[4],out=loadD);//d2
+    And(a=instruction[15],b=instruction[4],out=loadD);//d2
     DRegister(in=ALUout,load=loadD,out=Dout);
+
+
+     //when it is an C-instruction, and d3 is 1, then write M
+    And(a=instruction[15],b=instruction[3],out=writeM);//d3
 
 
 
